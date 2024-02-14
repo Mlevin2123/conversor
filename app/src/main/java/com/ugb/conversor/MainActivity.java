@@ -3,30 +3,61 @@ package com.ugb.conversor;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.Button;
+import android.view.View;
+import android.widget.Toast;
+import android.annotation.SuppressLint;
 
 public class MainActivity extends AppCompatActivity {
 
+    TabHost tbh;
+    TextView tempVal;
+    Spinner spn;
+    Button btn;
+    conversores miobj = new conversores();
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost tbh = findViewById(R.id.tbhconversor);
+        tbh = findViewById(R.id.tbhconversor);
         tbh.setup();
 
-        TabHost.TabSpec tab1 = tbh.newTabSpec("LON");
-        tab1.setContent(R.id.tablongitud);
-        tab1.setIndicator("LONGITUD");
-        tbh.addTab(tab1);
+        tbh.addTab(tbh.newTabSpec("LON").setContent(R.id.tablongitud).setIndicator("LONGITUD",null));
+        tbh.addTab(tbh.newTabSpec("ALM").setContent(R.id.tabalmacenamiento).setIndicator("ALMACENAMIENTO",null));
+        tbh.addTab(tbh.newTabSpec("MON").setContent(R.id.tabmonedas).setIndicator("MONEDAS",null));
+        btn = findViewById(R.id.btnConvertirLongitud);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spn = findViewById(R.id.spnDelongitud);
+                int de = spn.getSelectedItemPosition();
 
-        TabHost.TabSpec tab2 = tbh.newTabSpec("ALM");
-        tab2.setContent(R.id.tabalmacenamiento);
-        tab2.setIndicator("ALMACENAMIENTO");
-        tbh.addTab(tab2);
+                spn = findViewById(R.id.spnAlongitud);
+                int a = spn.getSelectedItemPosition();
 
-        TabHost.TabSpec tab3 = tbh.newTabSpec("MON");
-        tab3.setContent(R.id.tabmonedas);
-        tab3.setIndicator("MONEDAS");
-        tbh.addTab(tab3);
+                tempVal = findViewById(R.id.txtCantidadLongitud);
+                double cantidad = Double.parseDouble(tempVal.getText().toString());
+
+                double resp = miobj.convertir(0, de, a, cantidad);
+                Toast.makeText(getApplicationContext(),"Respuesta: "+ resp, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+}
+
+class conversores {
+    double[][] valores = {
+            {1, 100, 39.3701, 3.28084, 1.193, 1.09361, 0.001, 0.000621371},
+            {1},
+            {1}
+    };
+
+    public double convertir(int opcion, int de, int a, double cantidad) {
+        return valores[opcion][a] / valores[opcion][de] * cantidad;
     }
 }
