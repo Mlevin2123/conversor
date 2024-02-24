@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string-array name="spnLongitud">
-        <item>Metros</item>
-        <item>Cm</item>
-        <item>Pulgadas</item>
-        <item>Pie</item>
-        <item>Vara</item>
-        <item>Yarda</item>
-        <item>Km</item>
-        <item>Milla</item>
+    <string name="app_name">Mi Aplicación</string>
+
+    <!-- Otros arrays -->
+
+    <string-array name="spnArea">
+        <item>Pie Cuadrado</item>
+        <item>Vara Cuadrada</item>
+        <item>Yarda Cuadrada</item>
+        <item>Metro Cuadrado</item>
+        <item>Tareas</item>
+        <item>Manzana</item>
+        <item>Hectárea</item>
     </string-array>
-
-
 </resources>

@@ -1,5 +1,4 @@
 package com.ugb.conversor;
-
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TabHost;
@@ -8,56 +7,65 @@ import android.widget.Spinner;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Toast;
-import android.annotation.SuppressLint;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    TabHost tbh;
-    TextView tempVal;
-    Spinner spn;
-    Button btn;
-    conversores miobj = new conversores();
+    TabHost tabHost;
+    Spinner spnDeArea, spnAArea;
+    EditText txtCantidadArea;
+    Button btnConvertirArea;
+    Conversores miobj = new Conversores();
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tbh = findViewById(R.id.tbhconversor);
-        tbh.setup();
+        tabHost = findViewById(R.id.tabHost);
+        tabHost.setup();
 
-        tbh.addTab(tbh.newTabSpec("LON").setContent(R.id.tablongitud).setIndicator("LONGITUD",null));
-        tbh.addTab(tbh.newTabSpec("ALM").setContent(R.id.tabalmacenamiento).setIndicator("ALMACENAMIENTO",null));
-        tbh.addTab(tbh.newTabSpec("MON").setContent(R.id.tabmonedas).setIndicator("MONEDAS",null));
-        btn = findViewById(R.id.btnConvertirLongitud);
-        btn.setOnClickListener(new View.OnClickListener() {
+        TabHost.TabSpec tab1Spec = tabHost.newTabSpec("Tab One");
+        tab1Spec.setContent(R.id.consumo);
+        tab1Spec.setIndicator("Tab One");
+        tabHost.addTab(tab1Spec);
+
+        TabHost.TabSpec tab2Spec = tabHost.newTabSpec("Tab Two");
+        tab2Spec.setContent(R.id.tabarea);
+        tab2Spec.setIndicator("Tab Two");
+        tabHost.addTab(tab2Spec);
+
+        spnDeArea = findViewById(R.id.spnDeArea);
+        spnAArea = findViewById(R.id.spnAArea);
+        txtCantidadArea = findViewById(R.id.txtCantidadArea); // Asignar EditText
+        btnConvertirArea = findViewById(R.id.btnConvertirArea);
+
+        btnConvertirArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spn = findViewById(R.id.spnDelongitud);
-                int de = spn.getSelectedItemPosition();
-
-                spn = findViewById(R.id.spnAlongitud);
-                int a = spn.getSelectedItemPosition();
-
-                tempVal = findViewById(R.id.txtCantidadLongitud);
-                double cantidad = Double.parseDouble(tempVal.getText().toString());
-
-                double resp = miobj.convertir(0, de, a, cantidad);
-                Toast.makeText(getApplicationContext(),"Respuesta: "+ resp, Toast.LENGTH_LONG).show();
+                int de = spnDeArea.getSelectedItemPosition();
+                int a = spnAArea.getSelectedItemPosition();
+                double cantidad = Double.parseDouble(txtCantidadArea.getText().toString()); // Utilizar getText()
+                double resp = miobj.convertir(de, a, cantidad);
+                Toast.makeText(getApplicationContext(), "Respuesta: " + resp, Toast.LENGTH_LONG).show();
             }
         });
     }
 }
 
-class conversores {
+class Conversores {
     double[][] valores = {
-            {1, 100, 39.3701, 3.28084, 1.193, 1.09361, 0.001, 0.000621371},
-            {1},
-            {1}
+            // a. Pie Cuadrado   b. Vara Cuadrada  c. Yarda Cuadrada  d. Metro Cuadrado  e. Tareas  f. Manzana  g. Hectárea
+            {1, 0.00694444, 0.111111, 0.092903, 0.0001, 0.000698896, 0.000070}, // a. Pie Cuadrado
+            {144, 1, 16, 13.1168, 0.00000092, 0.0000645161, 0.00000645161}, // b. Vara Cuadrada
+            {9, 0.0625, 1, 0.836127, 0.00000929, 0.000645161, 0.0000645161}, // c. Yarda Cuadrada
+            {10.7639, 0.092903, 1.19599, 1, 0.0001, 0.00698896, 0.000698896}, // d. Metro Cuadrado
+            {10000, 69.8896, 1076.39, 10000, 1, 7000, 0.7}, // e. Tareas
+            {14400, 10000, 155000, 144000, 14, 1, 0.999999}, // f. Manzana
+            {142857.142857, 99225.225, 1532816.04656, 1428571.42857, 142.857143, 10.0007143, 1} // g. Hectárea
     };
 
-    public double convertir(int opcion, int de, int a, double cantidad) {
-        return valores[opcion][a] / valores[opcion][de] * cantidad;
+    public double convertir(int de, int a, double cantidad) {
+        return valores[a][de] * cantidad;
     }
 }
