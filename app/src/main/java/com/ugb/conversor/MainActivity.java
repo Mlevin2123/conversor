@@ -1,63 +1,50 @@
 package com.ugb.conversor;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.widget.TabHost;
-import android.widget.TextView;
-import android.widget.Spinner;
-import android.widget.Button;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.annotation.SuppressLint;
 
 public class MainActivity extends AppCompatActivity {
-
-    TabHost tbh;
     TextView tempVal;
-    Spinner spn;
     Button btn;
-    conversores miobj = new conversores();
-
-    @SuppressLint("MissingInflatedId")
+    String id="", accion="nuevo";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tbh = findViewById(R.id.tbhconversor);
-        tbh.setup();
-
-        tbh.addTab(tbh.newTabSpec("LON").setContent(R.id.tablongitud).setIndicator("LONGITUD",null));
-        tbh.addTab(tbh.newTabSpec("ALM").setContent(R.id.tabalmacenamiento).setIndicator("ALMACENAMIENTO",null));
-        tbh.addTab(tbh.newTabSpec("MON").setContent(R.id.tabmonedas).setIndicator("MONEDAS",null));
-        btn = findViewById(R.id.btnConvertirLongitud);
+        btn = findViewById(R.id.btnGuardarAmigo);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spn = findViewById(R.id.spnDelongitud);
-                int de = spn.getSelectedItemPosition();
+                tempVal = findViewById(R.id.txtnombre);
+                String nombre = tempVal.getText().toString();
+                tempVal = findViewById(R.id.txtnombre);
+                String direccion = tempVal.getText().toString();
+                tempVal = findViewById(R.id.txtnombre);
+                String tel = tempVal.getText().toString();
+                tempVal = findViewById(R.id.txtnombre);
+                String email = tempVal.getText().toString();
+                tempVal = findViewById(R.id.txtnombre);
+                String dui = tempVal.getText().toString();
 
-                spn = findViewById(R.id.spnAlongitud);
-                int a = spn.getSelectedItemPosition();
+                String[] datos = new  String[]{id,nombre,direccion,tel,email,dui};
+                DB db = new DB(getApplicationContext(), "", null,1);
+                String respuesta = db.administrar_amigos(accion,datos);
+                if (respuesta.equals("ok")){
+                    Toast.makeText(getApplicationContext(),"Amigo registrado con exito",Toast.LENGTH_LONG).show();
 
-                tempVal = findViewById(R.id.txtCantidadLongitud);
-                double cantidad = Double.parseDouble(tempVal.getText().toString());
-
-                double resp = miobj.convertir(0, de, a, cantidad);
-                Toast.makeText(getApplicationContext(),"Respuesta: "+ resp, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Error a intentar registrar el amigo"+ respuesta,Toast.LENGTH_LONG).show();
+                }
             }
         });
-    }
-}
 
-class conversores {
-    double[][] valores = {
-            {1, 100, 39.3701, 3.28084, 1.193, 1.09361, 0.001, 0.000621371},
-            {1},
-            {1}
-    };
-
-    public double convertir(int opcion, int de, int a, double cantidad) {
-        return valores[opcion][a] / valores[opcion][de] * cantidad;
     }
 }

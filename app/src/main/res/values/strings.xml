@@ -1,15 +1,3 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string-array name="spnLongitud">
-        <item>Metros</item>
-        <item>Cm</item>
-        <item>Pulgadas</item>
-        <item>Pie</item>
-        <item>Vara</item>
-        <item>Yarda</item>
-        <item>Km</item>
-        <item>Milla</item>
-    </string-array>
-
-
+    <string name="app_name">Agenda Amigos</string>
 </resources>
