@@ -9,23 +9,24 @@ import android.view.View;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class lista_amigos extends AppCompatActivity {
-    FloatingActionButton btnAgregarAmigos;
+    FloatingActionButton btnagregar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lista_amigos);
 
-        btnAgregarAmigos = findViewById(R.id.fabAgregarAmigos);
-        btnAgregarAmigos.setOnClickListener(new View.OnClickListener() {
+        btnagregar = findViewById(R.id.fabagregaramigo);
+        btnagregar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                abrirActividad();
+                abriractividad();
             }
         });
     }
-    private void abrirActividad(){
-        Intent abrirActividad = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(abrirActividad);
+    private void abriractividad(){
+        Intent abriractividad = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(abriractividad);
     }
 }
